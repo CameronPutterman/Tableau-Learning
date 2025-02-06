@@ -1,1 +1,95 @@
+Went to the original source article where the data was collected from. This is always the best place to start. 
+Understanding the data is essential before analysis. For MakeoverMonday the data source is already being interpreted. This is usually helpful but it is important to remain vigilant. Who knows where their analysis goes and if that’s the right place to go
+I Read over the data. Original author is doing the best that they can to make the data work for them but it is not easy. The data is cluttered. This is going to be my first task.
+There are 2 sheets with data that give slightly different insights. However, the data is too similar not to try and condense the sheets together. 
+I will run a query in SQL on makeovermonday_week_3_sheet1 to add a ‘percentage_change’ column
+SELECT category
+,current_arrangement
+,preferred_arrrangement
+,((preferred_arrrangement - current_arrangement) * 100.0 / current_arrangement) AS percentage_change
+FROM makeovermonday_week_3_sheet1
+;
+This essentially gives us the important information from the second sheet at a high level view
+It answers the question: how happy are employees with their current working arrangement?  
+Of course, some viewers will want to get into the fine details so we will leave the original  second sheet in as well
+It is important to organize the data before moving to create a visualization so some cleaning will  be done in Excel. 
+One thing to notice is that there is an employee missing from the ‘current_arrangement’ column
+It doesn’t seem like it will change our insights much but because of the small size of the data set it is something to note 
+It is time to export the data into Tableau
+At this point having a grip around what the data is is crucial because now we need to ask the question “where are we going?”
+I will try and create a visualization where we can see two separate breakdowns
+First, we will look at the data through the ‘percentage_change’ numbers
+This shows what arrangements people want and do not want
+*I think seeing the percent change is important and is useful information to see at a high level but I think pairing this insight with something else will help show what the data is saying, being that people do no want to work onsite and the closer people can get to a remote working arrangement the more content they are
+I am creating a 3rd sheet of data
+This sheet is doing what the ‘percentage_change’ column did for the first sheet but this time I am creating a high level view of what the second sheet is saying
+This sheet is the content/uncontent percentage
+“How many people working Remote are content there vs. how many are uncontent and would prefer a different arrangement
+These percentages are taken directly from sheet 2*
+Back to planning the viz
+I want a bar chart that shows ‘current _arrangement’ and ‘preferred_arrangement’ with an indicator of the ‘percent_change’
+I want 3 pie charts showing percent_content/uncontent for each arrangement
+I want a 3x3 heatmap showing all values of the ‘percentage_breakdown’
+*I am changing my sheet names to ‘Change’, ‘Breakdown’, ‘Content’ for clarity
+*I am adding one more piece of information
+I want the exact number of people that are represented in the ‘precentage_breakdown’
+Although the goal of this viz is to make it abundantly clear that people like remote work and do not like onsite work it is still important to show the scale of these percentages
+I am adding one more column to sheet 2 called ‘breakdown’
+This will be the actual number of people that the ‘percentage_breakdown’ column represents
+Formulating the data took me a while, there was probably a better way to do this…
+I needed the values from ‘current_arrangement’ in ‘Change’ and needed to multiply that by the percent in ‘percentage_breakdown’ in ‘Breakdown’. 
+I created the formula: =(Change!B3*D2) / 100
+Simple enough but I could not figure out how to have Excel copy the formula down the rows of the new column
+Checked Chat. Did not know I could XLOOKUP across multiple sheets. Very cool
+New formula: =D2*XLOOKUP(A2,Change!$A$2:$A$4,Change!$B$2:$B$4, FALSE) / 100*
+Exported data into Tableau but ran into a problem that there was an issue of not having a primary key
+I forgot that although the column names should be able to interact their nature (string vs numbers) is not compatible
+I created new columns in all 3 sheets titled ‘category_id’ 
+Formula: =IF(B2="Onsite", 1, IF(B2="Hybrid", 2, IF(B2="Remote", 3)))
+In Tableau
+Side by side bar chart i think works but I feel like stacked charts look less cluttered and are a better use of space within a dashboard so this is what we are doing
+These charts are from the ‘Change’ sheet and are the most important high level information
+Keeping this as simple as possible is correct
+Color differentiate between arrangements and number of employees that fall into each bin will be labeled within the chart
+Tableau does not intuitively let me stack two stacked charts side by side which I think gives an easy idea of where discontent is coming from. It likes to put the two charts on top of eachother. This is not a big problem in creating the overall dashboard
+Solution will be to create separate sheets with the same artistic choices and them configure them in the dashboard
+Next, to go even higher level than this is the ‘percentage_change’ data I added 
+I am questioning whether or not to make a kind of line graph 
+I want to have a x axis and 2 y axis with dots showing current and preferred number of the different work arrangements
+This will visually show slopes and accentuate the trends of employees’ preferences
+I played around with this concept a bit but I think, to pull this off correctly, I would need to change my data source
+This seems like a lot of extra work for very small gains, if any
+I think simply showing the numbers next to the stacked charts will honestly give the greatest impact
+The near 50% decrease between current onsite workers vs preference is a staggering number and probably holds more weight than a slope could
+When in doubt, keep it simple
+I added some borders, increased the font, created a color scale (red for decrease, green for increase), and added arrow symbols to the different percentages all in an attempt to make it stand out
+Essentially a KPI
+Moving on to the heatmap
+I think using too much color is one of the easiest ways to lose a viewer
+I am at 4 already and I like to limit my visualizations to 5 if possible so this heatmap will be monochromatic
+I will use blue because I like the idea of using blue and orange for my pie charts
+Tableau helps you to make a heatmap rather quickly so this chart is pretty straightforward
+I want to use the exact number of employees in this chart so my XLOOKUP is coming in handy
+I think the data is pulled so heavily from the 40 people who work remote and want to stay remote that it is affecting the heatmap’s color schema
+I am grappling with the idea of omitting it entirely as it is showing a visualization that is countering the story I am trying to tell with this dashboard
+I think it is relevant to leave in as it does bring an interesting insight in that once employees are working onsite there is not a high correlation to a specifically different arrangement
+The narrative would suggest that once people get back into “the swing of things” there is a lack of trend to a specific different arrangement
+I like the counter narrative so I am going to keep it
+In an actual analysis I think there is a world were the competing storylines can actually harmonize
+It is important to note that this data set is extremely small so for no other reason there should be this kind of chart that can show the details of the dataset
+I do want the number of people as the number on the chart but I am editing the Tooltip to clearly show the percentage of people in their current arrangement who want to either keep or change their arrangement 
+Numbers have no limits and can be difficult to wrap one’s head around them at times, but percentages always add up to 100 and I think that makes them powerful and useful
+81% of remote workers want to continue remote work is a great insight
+Last edit. I am changing the color to represent the % change 
+This might be wrong as I think the correlation is less intuitive since the percent numbers are only visible in the tooltip via hover but I think it is a better use of color and makes the “counter narrative” even more pronounced
+If I’m including it it has to really show an interesting enough point so using the color to help illustrate this, no pun intended, seems right to me
+I am moving onto the pie charts
+Content vs uncontent
+Simple stuff but I learned that you can just grab and drag the numbers that live on the outside of the pie and drop them into the slices 
+Just need to clean everything up and it’s done
+Summary:
+Percent change numbers show people prefer hybrid and remote work but more than that they strongly dislike onsite work
+Stacked charts show a similar story in that people are most happy and most split in terms of preference between hybrid and remote work and are hoping to get out of onsite work
+Pie charts show most people in each of the categories want to stay in that specific role with the exception of onsite workers
+Heatmap follows up the pie charts in that people have a tendency to want to stay in the arrangement they are currently in and although most of the onsite workers are uncontent the diagonal line that shows people want to stay in their current role actually holds somewhat true in this chart. The color is not more blue than its counterparts yet it also is not less blue. If a company really wanted their employees to transition to onsite work this chart would say that once they are used to the arrangement they will become content enough to stay there
 
