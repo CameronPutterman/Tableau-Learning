@@ -1,0 +1,47 @@
+Starting off by looking at the article where the data was pulled from. This article is pretty dense and lengthy so it is important to do two things with a topic as large as this. First, have a high level understanding of the topic in its entirety. Second, hone in on a specific aspect of the story you think is compelling. A funny story I think about when trying to determine what is a relevant insight to dive into versus one that more or less misses the point is the life cycle of becoming a chicken sexer (a real job!) It is not usually obvious what the right answer is and a large part of the job is truly intuition. This is not the same as luck. Chicken sexers, although there are no qualities the observant eye can use to tell the sex of a chicken, the sexers have a 95% accuracy in their determinations. The secret: repetition. The more data you look at, the better you get, maybe without even realizing it. Intuition is not luck. It is a skill that can be learned and improved upon. A veteran analyst can simply looks at a dataset and yells out “boy!” 
+A high level understanding of the data suggests the strong correlation between happiness and factors of age and country. 
+The specifics focus on happiness broken up by 6 indicators: freedom, generosity, life expectancy, GDP per capita, corruption, social support
+The original viz makes a stacked bar graph with all of these indicators to add up a country’s overall happiness 
+The point of the makeover needs to involve the indicators in some way
+Of all the indicators, GDP per capita is the most prevalent
+I think this will be a simple viz but honestly, my motto is that simpler is better
+I want to have 2 bar graphs ranking overall happiness as one and ranking GDP per Capita as the other, then in the middle have an action where a number will populate with the difference of ranking between the two metrics
+I will name the viz “Does Money Really Buy Happiness?”
+My hypothesis is that yes, it does
+This is the kind of question that people in the arts debate over but after this viz is complete I hope we can see how close the correlation is between the two 
+I think it would also be interesting to have the center number show the avg differential between the two charts
+Not quite sure how to do this but I’ll give it a shot
+The viz has everything ready to go from the data so no need to write any queries 
+I am just going to download the data into excel, then delete the unnecessary categories and export into Tableau 
+I am creating two bar charts, one for happiness and the other for GDP
+I am also creating two maps to go along with the charts 
+I am tying all 4 sheets together in a highlight action to help with the visual aid
+For the insight of the viz I need to create a correlation calculation based on the relative rankings of the two metrics
+#1 in happiness and #1 in GDP would be a 100% correlation and #1 in happiness and #143 in GDP (or vise versa) would be a 0% correlation
+I think a pie chart would look nice in real time as someone selects different countries but I think, as I look at the data that most of the correlation will be pretty high and the visual sliding of the pie chart may be underwhelming
+New idea…
+Wondering if I should have this pie chart showing correlation between overall happiness and the indicator, for example, GDP, but also have tabs to switch between all 6 different metrics
+This would not take away from the insight that happiness and wealth are strongly correlated
+In fact, I think it could bring this point home even harder since it will give the viewer an opportunity to see for themselves the correlation between wealth and other indicators
+I decided to keep just the one metric
+Looked to ChatGPT for help in creating calculated fields to rank countries by happiness and GDP per capita as well as help with creating algorithms to find the absolute value between the two and create the 2 portions for my pie chart
+This took me far too long
+Chat is still in its early phase and does not have all the answers
+I ended up going down a rabbit hole for hours and eventually had to just start completely from scratch
+After getting the pie chart to function and interact with the other actions in my dashboard I realized that every time I clicked on a new country the percent numbers in my pie chart would move
+I created a separate KPI style calculation that showed the number for the % correlation the pie chart showed
+This felt a bit redundant so I flipped the numbers to show the difference instead 
+Next, I want to add some actual insights
+143 countries is a lot of data to sift through
+I want to list the 10 countries with the highest differential, or lowest correlation, to help someone find the outliers 
+I combed through all the countries but feel like I need to change something
+Back to the differential calculation
+I need to change the script to reflect negative and positive
+At the moment I have it tracked to ABS but I think allowing the viewer to see the number and easily know if the country is more or less happy than their GDP per capita
+Now we recomb and find the top 5 for highest differential and lowest differential
+I am also going to add a caption to help with clarity
+I have a little extra space so Ill throw in a map
+I wish there was slightly more space because the map zooms in everytime you click on a country
+It would be nice to see the clusters of countries all with similar GDP per capita and see where their happiness differential lies
+Its still possible but it definitely takes more dedication to find these insights which is a bummer
+And now we post
